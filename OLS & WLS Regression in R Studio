@@ -1,0 +1,53 @@
+1). Fitting OLS & Testing for Heteroscedasticity: 
+  
+  ols.fit <- lm(dev.days~num.modifs+num.modules+team.size, data=swd)
+summary(ols.fit)
+## 
+## Call:
+## lm(formula = dev.days ~ num.modifs + num.modules + team.size, 
+##     data = swd)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -112.34  -40.35  -26.31    5.70  517.49 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(>|t|)    
+## (Intercept) 10.12065    6.75954   1.497   0.1346    
+## num.modifs   0.06208    0.03317   1.872   0.0615 .  
+## num.modules  3.24178    0.54934   5.901 4.66e-09 ***
+## team.size   13.45980    2.65646   5.067 4.66e-07 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 80.02 on 1233 degrees of freedom
+## Multiple R-squared:  0.07372,    Adjusted R-squared:  0.07147 
+## F-statistic: 32.71 on 3 and 1233 DF,  p-value: < 2.2e-16
+
+
+
+
+2). Weighted Least Squares Regression
+wls.fit<-lm(dev.days~num.modifs+num.modules+team.size, weights=1/ols.fit$residuals^2, data=swd)
+summary(wls.fit)
+## 
+## Call:
+## lm(formula = dev.days ~ num.modifs + num.modules + team.size, 
+##     data = swd, weights = 1/ols.fit$residuals^2)
+## 
+## Weighted Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -1.0878 -0.9992 -0.9985  0.9951  1.6698 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(>|t|)    
+## (Intercept) 10.088415   0.385348   26.18   <2e-16 ***
+## num.modifs   0.063645   0.001705   37.33   <2e-16 ***
+## num.modules  3.232577   0.033265   97.18   <2e-16 ***
+## team.size   13.453669   0.204166   65.90   <2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 1.001 on 1233 degrees of freedom
+## Multiple R-squared:  0.9818, Adjusted R-squared:  0.9818 
+## F-statistic: 2.222e+04 on 3 and 1233 DF,  p-value: < 2.2e-16
